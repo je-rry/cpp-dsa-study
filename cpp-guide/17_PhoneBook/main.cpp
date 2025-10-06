@@ -39,6 +39,7 @@ int main() {
                 break;
             case 4:
                 my_phonebook.DeleteByName();
+                break;
             default:
                 cout << "종료합니다." << endl;
                 flag = false;

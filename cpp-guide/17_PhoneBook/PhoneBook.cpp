@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <cstring> // memcpy(.)
+#include <cstring>
 
 using namespace std;
 
@@ -19,7 +19,7 @@ PhoneBook::~PhoneBook()
 
 bool PhoneBook::IsEmpty()
 {
-    assert(num_contacts_ >= 0);
+    assert(num_contacts_ >= 0);     // 음수일 경우 error
 
     if (num_contacts_ == 0)
         return true;
@@ -91,6 +91,12 @@ int PhoneBook::FindByName()
     cin.getline(search_name, sizeof(search_name));
 
     // TODO: IsEqual(), PrintContact(i), return i
+    for(int i = 0; i < num_contacts_; i++) {
+        if(IsEqual(search_name, contacts_[i].name)) {
+            PrintContact(i);
+            return i;
+        }
+    }
 
     cout << search_name << " 님을 찾지 못했습니다." << endl;
 
@@ -113,16 +119,17 @@ bool PhoneBook::IsEqual(const char str1[], const char str2[])
 
 void PhoneBook::DeleteByName()
 {
-    // 삭제할 때 메모리를 줄이지는 않는 것으로 할께요.
-
-    int index = FindByName();
+    // 삭제할 때 메모리를 줄이지는 않는 것으로 한다. (num_contacts_만 줄임)
+    int index = FindByName();   // 해당 인덱스 반환
 
     if (index >= 0)
     {
         // TODO: 중간에서 삭제했을 경우 데이터 정리
+        for(int i = index + 1; i < num_contacts_; i++) {
+            memcpy(&contacts_[i - 1], &contacts_[i], sizeof(Contact));
+        }
 
         // TODO: num_contacts_ 하나 감소
-
         num_contacts_ -= 1;
     }
 }
